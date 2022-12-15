@@ -12,14 +12,18 @@ function App() {
   const sendMessage = () => {
     if (message === "") return;
     console.log("Send message");
-    socket.emit("send_message", { message });
+    socket.emit("send_message", { type: "sent", message });
+    setMessages((prev) => [...prev, { type: "sent", message }]);
     setMessage("");
   };
 
   useEffect(() => {
     socket.on("receive_message", (data) => {
       console.log(data);
-      setMessages([...messages, data.message]);
+      setMessages((prev) => [
+        ...prev,
+        { type: "recived", meassage: data.message },
+      ]);
     });
   }, [socket]);
 
@@ -37,8 +41,13 @@ function App() {
         />
         <button onClick={sendMessage}>Send message</button>
         <div>
-          {messages.map((m) => (
-            <p>{m}</p>
+          {messages.map((m, i) => (
+            <p
+              style={{ textAlign: m.type === "send" ? "left" : "right" }}
+              key={`${m.message}-${i}`}
+            >
+              {m.message}
+            </p>
           ))}
         </div>
       </header>
