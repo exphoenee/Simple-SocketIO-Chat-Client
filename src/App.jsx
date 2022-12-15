@@ -7,24 +7,29 @@ const socket = io.connect("http://localhost:3000");
 
 function App() {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [allMessages, setAllMessages] = useState([]);
+
+  const userId = socket.id;
 
   const sendMessage = () => {
     if (message === "") return;
     console.log("Send message");
-    socket.emit("send_message", { type: "sent", message });
-    setMessages((prev) => [...prev, { type: "sent", message }]);
+    const data = { userId, message, date: Date.now() };
+    socket.emit("send_message", data);
+    setAllMessages((prev) => [...prev, data]);
     setMessage("");
   };
 
+  console.log(socket);
+
   useEffect(() => {
-    socket.on("receive_message", (data) => {
+    const handler = (data) => {
       console.log(data);
-      setMessages((prev) => [
-        ...prev,
-        { type: "recived", meassage: data.message },
-      ]);
-    });
+      setAllMessages((prev) => [...prev, data]);
+    };
+
+    socket.on("receive_message", handler);
+    return () => socket.off("receive_message", handler);
   }, [socket]);
 
   return (
@@ -41,12 +46,12 @@ function App() {
         />
         <button onClick={sendMessage}>Send message</button>
         <div>
-          {messages.map((m, i) => (
+          {allMessages.map((m, i) => (
             <p
-              style={{ textAlign: m.type === "send" ? "left" : "right" }}
+              style={{ textAlign: m.userId === userId ? "left" : "right" }}
               key={`${m.message}-${i}`}
             >
-              {m.message}
+              {m.userId === userId ? "me: " : `${m.userId}: `} {`${m.message}`}
             </p>
           ))}
         </div>
