@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 
 import "./App.css";
@@ -17,10 +17,17 @@ const socket = io.connect("http://localhost:3000");
 function App() {
   const user = checkUserStorage(socket);
 
-  console.log(user);
-
   const [allMessages, setAllMessages] = useState([]);
   const [userdata, setUserdata] = useState(user);
+
+  useEffect(() => {
+    const handleNewUsers = (users) => {
+      console.log(users);
+    };
+
+    socket.on("active_users", handleNewUsers);
+    return () => socket.off("active_users", handleNewUsers);
+  }, [socket]);
 
   return (
     <div className="App">
