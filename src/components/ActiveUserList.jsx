@@ -19,7 +19,11 @@ const ActiveUserList = () => {
       <h3>Active users</h3>
       <ul>
         {withoutThisUser.map((user) => (
-          <li key={user.id}>{user.username}</li>
+          <li key={user.id}>
+            <p>
+              {user.username} {user.loginDate}
+            </p>
+          </li>
         ))}
       </ul>
     </div>
