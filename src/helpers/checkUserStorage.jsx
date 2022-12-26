@@ -2,14 +2,14 @@ import getUserStorage from "../helpers/getUserStorage";
 import setUserStorage from "../helpers/setUserStorage";
 
 const checkUserStorage = (socket) => {
-  const user = getUserStorage();
+  const userdata = getUserStorage();
 
-  if (user) {
-    if (user.socketId !== socket.id) {
-      user.socketId = socket.id;
-      setUserStorage(user);
-      return user;
+  if (userdata && userdata?.username && userdata?.socketId) {
+    if (socket.id && userdata.socketId !== socket.id) {
+      userdata.socketId = socket.id;
+      setUserStorage(userdata);
     }
+    return userdata;
   }
   return null;
 };
