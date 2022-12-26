@@ -5,7 +5,7 @@ import { AllMessageContext } from "../contexts/AllMessageContext";
 import setUserStorage from "../helpers/setUserStorage";
 
 const LoginForm = () => {
-  const { socket } = useContext(AllMessageContext);
+  const { socket, userdata, setUserdata } = useContext(AllMessageContext);
   const [username, setUsername] = useState("");
 
   const sendLogin = (e) => {
@@ -13,7 +13,9 @@ const LoginForm = () => {
     if (username === "") return;
     console.log(`Login: ${username}`);
     const data = { socketId: socket.id, username };
+
     socket.emit("login", data);
+    setUserdata(data);
     setUserStorage(data);
   };
 
