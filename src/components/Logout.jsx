@@ -11,7 +11,6 @@ const Logout = () => {
     socket.emit("logout", userdata);
     setUserdata(null);
     setAllMessages([]);
-    //window.location.reload();
   };
 
   return (
