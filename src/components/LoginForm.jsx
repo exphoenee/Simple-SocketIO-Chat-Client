@@ -5,13 +5,12 @@ import { AllMessageContext } from "../contexts/AllMessageContext";
 import setUserStorage from "../helpers/setUserStorage";
 
 const LoginForm = () => {
-  const { socket, userdata, setUserdata } = useContext(AllMessageContext);
+  const { socket, setUserdata } = useContext(AllMessageContext);
   const [username, setUsername] = useState("");
 
   const sendLogin = (e) => {
     e.preventDefault();
     if (username === "") return;
-    console.log(`Login: ${username}`);
     const data = { socketId: socket.id, username };
 
     socket.emit("login", data);
