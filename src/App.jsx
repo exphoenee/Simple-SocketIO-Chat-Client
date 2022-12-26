@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import io from "socket.io-client";
 
 import "./App.css";
 
 import LoginForm from "./components/LoginForm";
+import Logout from "./components/Logout";
 import MessageFrom from "./components/MessageForm";
 import MessagesBox from "./components/MessagesBox";
 
@@ -14,34 +15,28 @@ import checkUserStorage from "./helpers/checkUserStorage";
 const socket = io.connect("http://localhost:3000");
 
 function App() {
-  const [allMessages, setAllMessages] = useState([]);
-
-  const socketId = socket.id;
   const user = checkUserStorage(socket);
 
-  console.log(socket);
+  console.log(user);
 
-  useEffect(() => {
-    const handler = (data) => {
-      console.log(data);
-      setAllMessages((prev) => [...prev, data]);
-    };
-
-    socket.on("receive_message", handler);
-    return () => socket.off("receive_message", handler);
-  }, [socket]);
+  const [allMessages, setAllMessages] = useState([]);
+  const [userdata, setUserdata] = useState(user);
 
   return (
     <div className="App">
       <AllMessageContextProvider
-        value={{ allMessages, setAllMessages, socket }}
+        value={{ allMessages, setAllMessages, userdata, setUserdata, socket }}
       >
-        <header className="App-header">
-          <h1>Socket.io chat app</h1>
-        </header>
-        <body>
-          {user ? <MessageFrom /> : <LoginForm />} <MessagesBox />
-        </body>
+        <h1>Socket.io chat app</h1>
+        {userdata ? (
+          <>
+            <Logout />
+            <MessageFrom />
+            <MessagesBox />
+          </>
+        ) : (
+          <LoginForm />
+        )}
       </AllMessageContextProvider>
     </div>
   );
