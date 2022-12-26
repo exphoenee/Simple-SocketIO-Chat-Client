@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 
-import { AllMessageContext } from "../contexts/allMessageContext";
+import { AllMessageContext } from "../contexts/AllMessageContext";
 
 const MessageForm = () => {
   const { setAllMessages, socketId, socket } = useContext(AllMessageContext);
