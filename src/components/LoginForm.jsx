@@ -12,7 +12,12 @@ const LoginForm = () => {
   const sendLogin = (e) => {
     e.preventDefault();
     if (username === "") return;
-    const data = { socketId: socket.id, username, id: uuidv4() };
+    const data = {
+      socketId: socket.id,
+      username,
+      id: uuidv4(),
+      loginDate: new Date(),
+    };
 
     socket.emit("login", data);
     setUserdata(data);
