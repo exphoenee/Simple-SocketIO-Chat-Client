@@ -3,16 +3,17 @@ import React, { useContext } from "react";
 import { AllMessageContext } from "../contexts/allMessageContext";
 
 const MessagesBox = () => {
-  const { allMessages, userId } = useContext(AllMessageContext);
+  const { allMessages, socketId } = useContext(AllMessageContext);
 
   return (
     <div>
       {allMessages.map((m, i) => (
         <p
-          style={{ textAlign: m.userId === userId ? "left" : "right" }}
+          style={{ textAlign: m.socketId === socketId ? "left" : "right" }}
           key={`${m.message}-${i}`}
         >
-          {m.userId === userId ? "me: " : `${m.userId}: `} {`${m.message}`}
+          {m.socketId === socketId ? "me: " : `${m.socketId}: `}{" "}
+          {`${m.message}`}
         </p>
       ))}
     </div>
