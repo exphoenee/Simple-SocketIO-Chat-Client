@@ -3,10 +3,12 @@ import React, { useState, useContext } from "react";
 import { AllMessageContext } from "../contexts/AllMessageContext";
 
 const Logout = () => {
-  const { setUserdata, setAllMessages } = useContext(AllMessageContext);
+  const { socket, userdata, setUserdata, setAllMessages } =
+    useContext(AllMessageContext);
 
   const handleLogout = () => {
     localStorage.removeItem("userdata");
+    socket.emit("logout", userdata);
     setUserdata(null);
     setAllMessages([]);
     //window.location.reload();
