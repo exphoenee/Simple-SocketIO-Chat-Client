@@ -1,8 +1,7 @@
-import { useContext } from "react";
 import getUserStorage from "../helpers/getUserStorage";
+import setUserStorage from "../helpers/setUserStorage";
 
-const checkUserStorage = () => {
-  const { socket } = useContext(AllMessageContext);
+const checkUserStorage = (socket) => {
   const user = getUserStorage();
 
   if (user) {
