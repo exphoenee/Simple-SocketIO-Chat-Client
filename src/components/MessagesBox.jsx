@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { AllMessageContext } from "../contexts/allMessageContext";
+import { AllMessageContext } from "../contexts/AllMessageContext";
 
 const MessagesBox = () => {
   const { allMessages, socketId } = useContext(AllMessageContext);
