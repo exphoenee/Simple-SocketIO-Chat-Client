@@ -7,6 +7,7 @@ import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
 import MessageFrom from "./components/MessageForm";
 import MessagesBox from "./components/MessagesBox";
+import ActiveUserList from "./components/ActiveUserList";
 
 import AllMessageContextProvider from "./contexts/AllMessageContext";
 
@@ -19,10 +20,12 @@ function App() {
 
   const [allMessages, setAllMessages] = useState([]);
   const [userdata, setUserdata] = useState(user);
+  const [activeUsers, setActiveUsers] = useState([]);
 
   useEffect(() => {
     const handleNewUsers = (users) => {
       console.log(users);
+      setActiveUsers(users);
     };
 
     socket.on("active_users", handleNewUsers);
@@ -32,7 +35,14 @@ function App() {
   return (
     <div className="App">
       <AllMessageContextProvider
-        value={{ allMessages, setAllMessages, userdata, setUserdata, socket }}
+        value={{
+          activeUsers,
+          allMessages,
+          setAllMessages,
+          userdata,
+          setUserdata,
+          socket,
+        }}
       >
         <h1>Socket.io chat app</h1>
         {userdata ? (
@@ -44,6 +54,7 @@ function App() {
         ) : (
           <LoginForm />
         )}
+        <ActiveUserList />
       </AllMessageContextProvider>
     </div>
   );
